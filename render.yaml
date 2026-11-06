@@ -1,0 +1,22 @@
+services:
+  - type: worker                 # бот работает постоянно (polling), поэтому не web-сервис
+    name: zan-tabigat-bot
+    runtime: python
+    plan: starter                # у воркеров нет бесплатного плана
+    buildCommand: pip install -r requirements.txt
+    startCommand: python zan_tabigat_bot.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: BOT_TOKEN
+        sync: false              # введите в панели Render, в файле не хранить
+      - key: PROSECUTOR_CHAT_ID
+        sync: false
+      - key: PROSECUTOR_IDS
+        sync: false
+      - key: DB_PATH
+        value: /data/signals.db  # база лежит на постоянном диске
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
